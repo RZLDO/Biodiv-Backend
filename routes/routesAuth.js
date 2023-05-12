@@ -1,4 +1,6 @@
 const [loginHandler, registerHandler, indexHandler] = require('../handler/authHandler');
+const getTotalData = require('../handler/allData');
+const authMiddleware = require('../middleware/authMiddleware');
 const AuthRoutes = [
   {
     method: 'Post',
@@ -14,6 +16,19 @@ const AuthRoutes = [
     method: 'Get',
     path: '/',
     handler: indexHandler,
+  },
+  {
+    method: 'GET',
+    path: '/api/totalData',
+    handler: getTotalData,
+    options: {
+      pre: [
+        {
+          method: authMiddleware,
+          assign: 'verifyToken',
+        },
+      ],
+    },
   },
 ];
 
