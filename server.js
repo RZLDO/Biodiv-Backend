@@ -1,6 +1,7 @@
 const Hapi = require('@hapi/hapi');
 const AuthRoutes = require('./routes/routesAuth');
 const classRoute = require('./routes/classRoute');
+const familiRoutes = require('./routes/familiRoute');
 
 const server = new Hapi.server({
   port: 5000,
@@ -8,7 +9,7 @@ const server = new Hapi.server({
 });
 const init = async () => {
   await server.register(require('@hapi/inert'));
-  server.route([...AuthRoutes, ...classRoute]);
+  server.route([...AuthRoutes, ...classRoute, ...familiRoutes]);
   await server.start();
   console.log(`Server berjalan pada ${server.info.uri}`);
 };
