@@ -56,4 +56,5 @@ const getTotalData = async (request, h) => {
     return response;
   }
 };
+
 module.exports = getTotalData;
