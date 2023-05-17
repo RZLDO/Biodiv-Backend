@@ -1,6 +1,7 @@
 const connection = require('../service/databaseConnection');
 const path = require('path');
 const fs = require('fs');
+const { request } = require('http');
 const getAllOrdo = async (request, h) => {
   try {
     const query = 'SELECT * FROM tb_ordo where verifikasi =? ';
@@ -78,4 +79,48 @@ const addOrdo = async (request, h) => {
   }
 };
 
-module.exports = [getAllOrdo, addOrdo];
+const detailOrdo = async (request, h) => {
+  try {
+    const { id_ordo } = request.params;
+    const query = 'SELECT * FROM tb_ordo where id_ordo = ?';
+    const queryParams = [id_ordo];
+
+    const [data] = await (await connection).execute(query, queryParams);
+    console.log('ini data ' + data);
+    return h
+      .response({
+        error: false,
+        message: 'Get Detail Data Success',
+        data: data,
+      })
+      .code(200);
+  } catch (error) {
+    return h
+      .response({
+        error: false,
+        message: error,
+      })
+      .code(500);
+  }
+};
+const verifikasiOrdo = async (request, h) => {
+  try {
+    const { id_ordo } = request.params;
+    const { verifikasi } = request.payload;
+    const query = 'UPDATE tb_ordo set verifikasi =? where id_ordo = ?';
+    const queryParams = [id_ordo, verifikasi];
+    await (await connection).execute(query, queryParams);
+    return h.response({
+      error: false,
+      message: 'Verifikasi data success',
+    });
+  } catch (error) {
+    return h
+      .response({
+        error: true,
+        message: error,
+      })
+      .code(500);
+  }
+};
+module.exports = [getAllOrdo, addOrdo, detailOrdo];
