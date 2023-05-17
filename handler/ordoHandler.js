@@ -36,7 +36,12 @@ const addOrdo = async (request, h) => {
   const { nama_latin, nama_umum, ciri_ciri, keterangan, id_class } = request.payload;
 
   if (!request.payload.image) {
-    return h.response('No image uploaded.').code(400);
+    return h
+      .response({
+        error: true,
+        message: 'No image uploaded.',
+      })
+      .code(400);
   }
 
   const file = request.payload.image;
@@ -46,17 +51,30 @@ const addOrdo = async (request, h) => {
   const fileStream = fs.createWriteStream(filePath);
   fileStream.on('error', (err) => {
     console.error(err);
-    return h.response('Error uploading file.').code(500);
+    return h
+      .response({
+        error: true,
+        message: 'Error uploading file',
+      })
+      .code(500);
   });
 
   file.pipe(fileStream);
   try {
     await (await connection).execute('INSERT INTO tb_ordo (id_ordo, nama_latin, nama_umum, ciri_ciri, keterangan, gambar, id_class) VALUES (?,?,?,?,?,?,?)', [null, nama_latin, nama_umum, ciri_ciri, keterangan, fileName, id_class]);
-    return h.response({ status: 'success' });
+    return h.response({
+      error: false,
+      status: 'success',
+    });
   } catch (error) {
     console.error(error);
 
-    return h.response('Error inserting data into the database.').code(500);
+    return h
+      .response({
+        error: true,
+        message: 'Error inserting data into the database.',
+      })
+      .code(500);
   }
 };
 

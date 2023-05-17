@@ -5,7 +5,7 @@ const familiRoutes = require('./routes/familiRoute');
 const ordoRoute = require('./routes/ordoRoute');
 const server = new Hapi.server({
   port: 5000,
-  host: '192.168.1.71',
+  host: '192.168.1.9',
 });
 const init = async () => {
   await server.register(require('@hapi/inert'));

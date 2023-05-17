@@ -3,6 +3,7 @@ const ordoRoute = [
   {
     method: 'POST',
     path: '/api/ordo',
+
     handler: addOrdo,
     options: {
       payload: {

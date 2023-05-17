@@ -1,6 +1,11 @@
-const [getAllClass, getDataClassById, addClassDataToTemp, verifikasiTbClass, getImageClass] = require('../handler/ClassHandler');
+const [getAllClass, getDataClassById, addClassDataToTemp, verifikasiTbClass, getImageClass, deleteClass, updateClassData] = require('../handler/ClassHandler');
 const Path = require('path');
 const classRoute = [
+  {
+    method: 'DELETE',
+    path: '/api/class/{id_class}',
+    handler: deleteClass,
+  },
   {
     method: 'GET',
     path: '/api/class',
@@ -32,6 +37,18 @@ const classRoute = [
         path: Path.join(__dirname, '../asset/'), // Ganti dengan path sesuai dengan lokasi file-file Anda
         redirectToSlash: true,
         index: true,
+      },
+    },
+  },
+  {
+    method: 'PUT',
+    path: '/api/class',
+    handler: updateClassData,
+    options: {
+      payload: {
+        parse: true,
+        allow: 'multipart/form-data',
+        multipart: { output: 'stream' },
       },
     },
   },
