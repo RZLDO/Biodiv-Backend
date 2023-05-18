@@ -111,7 +111,6 @@ const addClassDataToTemp = async (request, h) => {
 };
 const updateClassData = async (request, h) => {
   const { id_class, nama_latin, nama_umum, ciri_ciri, keterangan } = request.payload;
-  console.log(id_class);
   if (!request.payload.image) {
     return h
       .response({

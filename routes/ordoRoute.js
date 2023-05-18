@@ -1,4 +1,4 @@
-const [getAllOrdo, addOrdo, detailOrdo] = require('../handler/ordoHandler');
+const [getAllOrdo, addOrdo, detailOrdo, deleteOrdo] = require('../handler/ordoHandler');
 const ordoRoute = [
   {
     method: 'POST',
@@ -22,6 +22,11 @@ const ordoRoute = [
     method: 'GET',
     path: '/api/ordo/{id_ordo}',
     handler: detailOrdo,
+  },
+  {
+    method: 'DELETE',
+    path: '/api/ordo/{id_ordo}',
+    handler: deleteOrdo,
   },
 ];
 

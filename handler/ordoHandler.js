@@ -65,11 +65,10 @@ const addOrdo = async (request, h) => {
     await (await connection).execute('INSERT INTO tb_ordo (id_ordo, nama_latin, nama_umum, ciri_ciri, keterangan, gambar, id_class) VALUES (?,?,?,?,?,?,?)', [null, nama_latin, nama_umum, ciri_ciri, keterangan, fileName, id_class]);
     return h.response({
       error: false,
-      status: 'success',
+      message: 'success add data to database',
     });
   } catch (error) {
     console.error(error);
-
     return h
       .response({
         error: true,
@@ -86,12 +85,11 @@ const detailOrdo = async (request, h) => {
     const queryParams = [id_ordo];
 
     const [data] = await (await connection).execute(query, queryParams);
-    console.log('ini data ' + data);
     return h
       .response({
         error: false,
         message: 'Get Detail Data Success',
-        data: data,
+        data: data[0],
       })
       .code(200);
   } catch (error) {
@@ -103,6 +101,26 @@ const detailOrdo = async (request, h) => {
       .code(500);
   }
 };
+
+const deleteOrdo = async (request, h) => {
+  try {
+    const { id_ordo } = request.params;
+    const query = 'Delete From tb_ordo where id_ordo = ?';
+    const queryParams = [id_ordo];
+
+    await (await connection).execute(query, queryParams);
+    return h.response({
+      error: false,
+      message: 'Delete data Ordo Success',
+    });
+  } catch (error) {
+    return h.response({
+      error: true,
+      message: error,
+    });
+  }
+};
+
 const verifikasiOrdo = async (request, h) => {
   try {
     const { id_ordo } = request.params;
@@ -123,4 +141,4 @@ const verifikasiOrdo = async (request, h) => {
       .code(500);
   }
 };
-module.exports = [getAllOrdo, addOrdo, detailOrdo];
+module.exports = [getAllOrdo, addOrdo, detailOrdo, deleteOrdo];
