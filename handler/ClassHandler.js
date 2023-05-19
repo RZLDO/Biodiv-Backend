@@ -6,6 +6,7 @@ const getAllClass = async (response, h) => {
     const query = 'SELECT * FROM tb_class where verifikasi = ?';
     const queryParams = 'sukses';
     const [data] = await (await connection).execute(query, [queryParams]);
+
     if (data && data.length > 0) {
       const response = h.response({
         error: false,
@@ -109,6 +110,7 @@ const addClassDataToTemp = async (request, h) => {
       .code(500);
   }
 };
+
 const updateClassData = async (request, h) => {
   const { id_class, nama_latin, nama_umum, ciri_ciri, keterangan } = request.payload;
   if (!request.payload.image) {

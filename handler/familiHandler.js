@@ -1,6 +1,49 @@
 const connection = require('../service/databaseConnection');
 const path = require('path');
 const fs = require('fs');
+const addFamily = async (request, h) => {
+  const { nama_latin, nama_umum, ciri_ciri, keterangan, id_ordo } = request.payload;
+  if (!request.payload.image) {
+    return h
+      .response({
+        error: true,
+        message: 'Please provide the image',
+      })
+      .code(400);
+  }
+
+  const file = request.payload.image;
+  const fileName = file.hapi.filename;
+  const filePath = path.join(__dirname, '../asset/', fileName);
+
+  const fileStream = fs.createWriteStream(filePath);
+
+  fileStream.on('error', (err) => {
+    console.log(err);
+    return h
+      .response({
+        error: true,
+        message: 'error when uploading file',
+      })
+      .code(500);
+  });
+
+  file.pipe(fileStream);
+
+  try {
+    await (await connection).execute('INSERT INTO tb_famili (id_famili, nama_latin, nama_umum, ciri_ciri,keterangan, gambar, id_ordo)VAlUES (?,?,?,?,?,?,?)', [null, nama_latin, nama_umum, ciri_ciri, keterangan, fileName, id_ordo]);
+    return h.response({
+      error: false,
+      message: 'Add data Famili success',
+    });
+  } catch (error) {
+    console.log(error);
+    return h.response({
+      error: true,
+      message: 'error when insert data to the database',
+    });
+  }
+};
 const getAllFamily = async (request, h) => {
   try {
     const query = 'SELECT * FROM tb_famili where verifikasi = ?';
@@ -63,5 +106,67 @@ const getFamilyById = async (request, h) => {
     return response;
   }
 };
+const updateFamily = async (request, h) => {
+  const { id_famili, nama_latin, nama_umum, ciri_ciri, keterangan, id_ordo } = request.payload;
 
-module.exports = [getAllFamily, getFamilyById];
+  if (!request.payload.image) {
+    return h
+      .response({
+        error: true,
+        message: 'Please Provide the image',
+      })
+      .code(400);
+  }
+
+  const file = request.payload.image;
+  const fileName = file.hapi.filename;
+  const filePath = path.join(__dirname, '../asset/', fileName);
+
+  const fileStream = fs.createWriteStream(filePath);
+  fileStream.on('error', (err) => {
+    return h
+      .response({
+        error: true,
+        message: 'error when uploading file',
+      })
+      .code(500);
+  });
+
+  file.pipe(fileStream);
+
+  try {
+    await (await connection).execute('UPDATE tb_famili SET nama_latin = ?,nama_umum = ?, ciri_ciri = ?, keterangan = ? , id_ordo = ? WHERE id_famili =  ?', [nama_latin, nama_umum, ciri_ciri, keterangan, id_ordo, id_famili]);
+
+    return h.response({
+      error: false,
+      message: 'Update data Success',
+    });
+  } catch (error) {
+    return h.response({
+      error: true,
+      message: 'Error : ' + error,
+    });
+  }
+};
+
+const deleteFamily = async (request, h) => {
+  try {
+    const { id_famili } = request.params;
+
+    const query = 'DELETE from tb_famili where id_famili  = ?';
+    const queryParams = [id_famili];
+
+    await (await connection).execute(query, queryParams);
+    return h.response({
+      error: false,
+      message: 'Delete Data success',
+    });
+  } catch (error) {
+    return h.response({
+      error: true,
+      message: 'error when delete data : ' + error,
+    });
+  }
+};
+
+module.exports = [getAllFamily, getFamilyById, addFamily, updateFamily, deleteFamily];
