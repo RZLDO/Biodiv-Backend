@@ -1,4 +1,4 @@
-const [getAllOrdo, addOrdo, detailOrdo, deleteOrdo] = require('../handler/ordoHandler');
+const [getAllOrdo, addOrdo, detailOrdo, deleteOrdo, verifikasiOrdo, EditDataOrdo] = require('../handler/ordoHandler');
 const ordoRoute = [
   {
     method: 'POST',
@@ -27,6 +27,18 @@ const ordoRoute = [
     method: 'DELETE',
     path: '/api/ordo/{id_ordo}',
     handler: deleteOrdo,
+  },
+  {
+    method: 'PUT',
+    path: '/api/ordo',
+    handler: EditDataOrdo,
+    options: {
+      payload: {
+        parse: true,
+        allow: 'multipart/form-data',
+        multipart: { output: 'stream' },
+      },
+    },
   },
 ];
 

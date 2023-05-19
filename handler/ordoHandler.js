@@ -120,7 +120,52 @@ const deleteOrdo = async (request, h) => {
     });
   }
 };
+const EditDataOrdo = async (request, h) => {
+  const { id_ordo, nama_latin, nama_umum, ciri_ciri, keterangan, id_class } = request.payload;
 
+  if (!request.payload.image) {
+    return h
+      .response({
+        error: true,
+        message: 'No image uploaded.',
+      })
+      .code(400);
+  }
+
+  const file = request.payload.image;
+  const fileName = file.hapi.filename;
+  const filePath = path.join(__dirname, '../asset/', fileName);
+
+  const fileStream = fs.createWriteStream(filePath);
+  fileStream.on('error', (err) => {
+    console.error(err);
+    return h
+      .response({
+        error: true,
+        message: 'Error uploading file',
+      })
+      .code(500);
+  });
+
+  file.pipe(fileStream);
+  try {
+    await (
+      await connection
+    ).execute('UPDATE tb_ordo set nama_latin = ? , nama_umum = ?, ciri_ciri = ?, keterangan = ?, gambar = ?, id_class =? where id_ordo = ?', [nama_latin, nama_umum, ciri_ciri, keterangan, fileName, id_class, id_ordo]);
+    return h.response({
+      error: false,
+      message: 'update data ordo success',
+    });
+  } catch (error) {
+    console.error(error);
+    return h
+      .response({
+        error: true,
+        message: 'Error update data into the database.',
+      })
+      .code(500);
+  }
+};
 const verifikasiOrdo = async (request, h) => {
   try {
     const { id_ordo } = request.params;
@@ -141,4 +186,4 @@ const verifikasiOrdo = async (request, h) => {
       .code(500);
   }
 };
-module.exports = [getAllOrdo, addOrdo, detailOrdo, deleteOrdo];
+module.exports = [getAllOrdo, addOrdo, detailOrdo, deleteOrdo, verifikasiOrdo, EditDataOrdo];
