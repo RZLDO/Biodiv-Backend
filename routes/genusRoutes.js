@@ -1,4 +1,4 @@
-const [getGenusData, AddGenusData] = require('../handler/genusHandler');
+const [getGenusData, AddGenusData, DetailgenusData] = require('../handler/genusHandler');
 const genusRoutes = [
   {
     method: 'GET',
@@ -16,6 +16,11 @@ const genusRoutes = [
         multipart: { output: 'stream' },
       },
     },
+  },
+  {
+    method: 'GET',
+    path: '/api/genus/{id_genus}',
+    handler: DetailgenusData,
   },
 ];
 

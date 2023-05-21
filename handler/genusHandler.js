@@ -63,4 +63,22 @@ const AddGenusData = async (request, h) => {
   }
 };
 
-module.exports = [getGenusData, AddGenusData];
+const DetailgenusData = async (request, h) => {
+  try {
+    const { id_genus } = request.params;
+    const query = 'SELECT * FROM tb_genus where id_genus = ?';
+    const queryParams = [id_genus];
+    const [data] = await (await connection).execute(query, queryParams);
+    return h.response({
+      error: false,
+      message: 'fetch Detail Genus Data Success',
+      data: data[0],
+    });
+  } catch (error) {
+    return h.response({
+      error: true,
+      message: error,
+    });
+  }
+};
+module.exports = [getGenusData, AddGenusData, DetailgenusData];
