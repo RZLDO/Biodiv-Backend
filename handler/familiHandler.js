@@ -77,11 +77,12 @@ const getAllFamily = async (request, h) => {
 
 const getFamilyById = async (request, h) => {
   try {
-    const { id } = request.query;
-    const query = 'Select * from tb_famili where id_class = ?';
-    const queryParams = [id];
-    const [data] = (await connection).execute(query, queryParams);
-    if (data === 0) {
+    const { id_famili } = request.params;
+    const query = 'Select * from tb_famili where id_famili = ?';
+    const queryParams = [id_famili];
+    const [data] = await (await connection).execute(query, queryParams);
+
+    if (!data) {
       const response = h.response({
         error: true,
         message: 'class not found',
@@ -92,11 +93,12 @@ const getFamilyById = async (request, h) => {
       const response = h.response({
         error: false,
         message: 'get Data class success',
-        data,
+        data: data[0],
       });
       return response;
     }
   } catch (error) {
+    console.log(error);
     const response = h.response({
       error: true,
       message: error,
