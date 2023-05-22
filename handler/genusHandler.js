@@ -25,6 +25,7 @@ const getGenusData = async (response, h) => {
 
 const AddGenusData = async (request, h) => {
   const { nama_latin, nama_umum, ciri_ciri, keterangan, id_famili } = request.payload;
+  console.log(nama_latin, nama_umum, ciri_ciri, keterangan, id_famili);
   if (!request.payload.image) {
     return h
       .response({
@@ -53,7 +54,7 @@ const AddGenusData = async (request, h) => {
     await (await connection).execute('INSERT INTO tb_genus (id_genus, nama_latin,nama_umum, ciri_ciri,keterangan, gambar, id_famili) VALUES(?,?,?,?,?,?,?)', [null, nama_latin, nama_umum, ciri_ciri, keterangan, fileName, id_famili]);
     return h.response({
       error: false,
-      message: 'Add Data Famili success',
+      message: 'Add Data Genus success',
     });
   } catch (error) {
     return h.response({
@@ -103,7 +104,6 @@ const DeleteGenusData = async (request, h) => {
 
 const updateGenus = async (request, h) => {
   const { id_genus, nama_latin, nama_umum, ciri_ciri, keterangan, id_famili } = request.payload;
-
   if (!request.payload.image) {
     return h
       .response({
@@ -130,8 +130,10 @@ const updateGenus = async (request, h) => {
   file.pipe(fileStream);
 
   try {
-    await (await connection).execute('UPDATE tb_genus SET nama_latin = ?,nama_umum = ?, ciri_ciri = ?, keterangan = ? , id_famili = ? WHERE id_genus =  ?', [nama_latin, nama_umum, ciri_ciri, keterangan, id_famili, id_genus]);
-
+    const [response] = await (
+      await connection
+    ).execute('UPDATE tb_genus SET nama_latin = ?,nama_umum = ?, ciri_ciri = ?, keterangan = ? , id_famili = ? WHERE id_genus =  ?', [nama_latin, nama_umum, ciri_ciri, keterangan, id_famili, id_genus]);
+    console.log(response);
     return h.response({
       error: false,
       message: 'Update data Success',
