@@ -100,4 +100,47 @@ const DeleteGenusData = async (request, h) => {
     });
   }
 };
-module.exports = [getGenusData, AddGenusData, DetailgenusData, DeleteGenusData];
+
+const updateGenus = async (request, h) => {
+  const { id_genus, nama_latin, nama_umum, ciri_ciri, keterangan, id_famili } = request.payload;
+
+  if (!request.payload.image) {
+    return h
+      .response({
+        error: true,
+        message: 'Please Provide the image',
+      })
+      .code(400);
+  }
+
+  const file = request.payload.image;
+  const fileName = file.hapi.filename;
+  const filePath = path.join(__dirname, '../asset/', fileName);
+
+  const fileStream = fs.createWriteStream(filePath);
+  fileStream.on('error', (err) => {
+    return h
+      .response({
+        error: true,
+        message: 'error when uploading file',
+      })
+      .code(500);
+  });
+
+  file.pipe(fileStream);
+
+  try {
+    await (await connection).execute('UPDATE tb_genus SET nama_latin = ?,nama_umum = ?, ciri_ciri = ?, keterangan = ? , id_famili = ? WHERE id_genus =  ?', [nama_latin, nama_umum, ciri_ciri, keterangan, id_famili, id_genus]);
+
+    return h.response({
+      error: false,
+      message: 'Update data Success',
+    });
+  } catch (error) {
+    return h.response({
+      error: true,
+      message: 'Error : ' + error,
+    });
+  }
+};
+module.exports = [getGenusData, AddGenusData, DetailgenusData, DeleteGenusData, updateGenus];

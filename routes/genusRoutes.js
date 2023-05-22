@@ -1,4 +1,4 @@
-const [getGenusData, AddGenusData, DetailgenusData, DeleteGenusData] = require('../handler/genusHandler');
+const [getGenusData, AddGenusData, DetailgenusData, DeleteGenusData, updateGenus] = require('../handler/genusHandler');
 const genusRoutes = [
   {
     method: 'GET',
@@ -26,6 +26,18 @@ const genusRoutes = [
     method: 'DELETE',
     path: '/api/genus/{id_genus}',
     handler: DeleteGenusData,
+  },
+  {
+    method: 'PUT',
+    path: '/api/genus',
+    handler: updateGenus,
+    options: {
+      payload: {
+        parse: true,
+        allow: 'multipart/form-data',
+        multipart: { output: 'stream' },
+      },
+    },
   },
 ];
 
