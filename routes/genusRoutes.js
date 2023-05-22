@@ -1,4 +1,4 @@
-const [getGenusData, AddGenusData, DetailgenusData] = require('../handler/genusHandler');
+const [getGenusData, AddGenusData, DetailgenusData, DeleteGenusData] = require('../handler/genusHandler');
 const genusRoutes = [
   {
     method: 'GET',
@@ -21,6 +21,11 @@ const genusRoutes = [
     method: 'GET',
     path: '/api/genus/{id_genus}',
     handler: DetailgenusData,
+  },
+  {
+    method: 'DELETE',
+    path: '/api/genus/{id_genus}',
+    handler: DeleteGenusData,
   },
 ];
 

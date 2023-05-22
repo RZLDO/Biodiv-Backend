@@ -81,4 +81,23 @@ const DetailgenusData = async (request, h) => {
     });
   }
 };
-module.exports = [getGenusData, AddGenusData, DetailgenusData];
+
+const DeleteGenusData = async (request, h) => {
+  try {
+    const { id_genus } = request.params;
+    const query = 'DELETE FROM tb_genus where id_genus = ? ';
+    const queryParams = [id_genus];
+
+    await (await connection).execute(query, queryParams);
+    return h.response({
+      error: false,
+      message: 'Delete Data Genus Success',
+    });
+  } catch (error) {
+    return h.response({
+      error: false,
+      message: 'error : ' + error,
+    });
+  }
+};
+module.exports = [getGenusData, AddGenusData, DetailgenusData, DeleteGenusData];
