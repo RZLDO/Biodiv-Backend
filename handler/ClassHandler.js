@@ -168,6 +168,7 @@ const verifikasiTbClass = async (request, h) => {
     }
   });
 };
+
 const deleteClass = async (request, h) => {
   try {
     const { id_class } = request.params;
