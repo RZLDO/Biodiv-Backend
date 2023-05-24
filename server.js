@@ -7,7 +7,7 @@ const genusRoutes = require('./routes/genusRoutes');
 const unverifiedRoutes = require('./routes/unverifiedRoute');
 const server = new Hapi.server({
   port: 5000,
-  host: '192.168.1.13',
+  host: '192.168.1.7',
 });
 const init = async () => {
   await server.register(require('@hapi/inert'));
