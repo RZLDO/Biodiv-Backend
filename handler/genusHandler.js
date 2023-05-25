@@ -145,4 +145,23 @@ const updateGenus = async (request, h) => {
     });
   }
 };
-module.exports = [getGenusData, AddGenusData, DetailgenusData, DeleteGenusData, updateGenus];
+
+const verifGenus = async (request, h) => {
+  try {
+    const { id_genus } = request.params;
+    const query = 'UPDATE tb_genus SET verifikasi = ? where id_genus = ? ';
+    const queryParams = 'sukses';
+
+    await (await connection).execute(query, [queryParams, id_genus]);
+    return h.response({
+      error: false,
+      message: 'verivication Genus success',
+    });
+  } catch (error) {
+    return h.response({
+      error: true,
+      message: 'verivication Genus Failed',
+    });
+  }
+};
+module.exports = [getGenusData, AddGenusData, DetailgenusData, DeleteGenusData, updateGenus, verifGenus];

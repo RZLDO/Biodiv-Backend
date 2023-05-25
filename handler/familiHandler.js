@@ -171,4 +171,22 @@ const deleteFamily = async (request, h) => {
   }
 };
 
-module.exports = [getAllFamily, getFamilyById, addFamily, updateFamily, deleteFamily];
+const verifFamili = async (request, h) => {
+  try {
+    const { id_famili } = request.params;
+    const query = 'UPDATE tb_famili SET verifikasi = ? where id_famili = ? ';
+    const queryParams = 'sukses';
+
+    await (await connection).execute(query, [queryParams, id_famili]);
+    return h.response({
+      error: false,
+      message: 'verivication famili success',
+    });
+  } catch (error) {
+    return h.response({
+      error: true,
+      message: 'verivication famili Failed',
+    });
+  }
+};
+module.exports = [getAllFamily, getFamilyById, addFamily, updateFamily, deleteFamily, verifFamili];

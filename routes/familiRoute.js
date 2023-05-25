@@ -1,4 +1,4 @@
-const [getAllFamily, getFamilyById, addFamily, updateFamily, deleteFamily] = require('../handler/familiHandler');
+const [getAllFamily, getFamilyById, addFamily, updateFamily, deleteFamily, verifFamili] = require('../handler/familiHandler');
 
 const familiRoutes = [
   {
@@ -40,6 +40,11 @@ const familiRoutes = [
     method: 'DELETE',
     path: '/api/famili/{id_famili}',
     handler: deleteFamily,
+  },
+  {
+    method: 'PUT',
+    path: '/api/verif/famili/{id_famili}',
+    handler: verifFamili,
   },
 ];
 

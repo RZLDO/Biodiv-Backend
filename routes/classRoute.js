@@ -52,6 +52,11 @@ const classRoute = [
       },
     },
   },
+  {
+    method: 'PUT',
+    path: '/api/verif/class/{id_class}',
+    handler: verifikasiTbClass,
+  },
 ];
 
 module.exports = classRoute;

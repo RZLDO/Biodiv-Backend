@@ -40,6 +40,11 @@ const ordoRoute = [
       },
     },
   },
+  {
+    method: 'PUT',
+    path: '/api/verif/ordo/{id_ordo}',
+    handler: verifikasiOrdo,
+  },
 ];
 
 module.exports = ordoRoute;

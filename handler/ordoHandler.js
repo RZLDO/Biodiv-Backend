@@ -169,21 +169,20 @@ const EditDataOrdo = async (request, h) => {
 const verifikasiOrdo = async (request, h) => {
   try {
     const { id_ordo } = request.params;
-    const { verifikasi } = request.payload;
-    const query = 'UPDATE tb_ordo set verifikasi =? where id_ordo = ?';
-    const queryParams = [id_ordo, verifikasi];
-    await (await connection).execute(query, queryParams);
+    const query = 'UPDATE tb_ordo SET verifikasi = ? where id_ordo = ? ';
+    const queryParams = 'sukses';
+
+    await (await connection).execute(query, [queryParams, id_ordo]);
     return h.response({
       error: false,
-      message: 'Verifikasi data success',
+      message: 'verivication Ordo success',
     });
   } catch (error) {
-    return h
-      .response({
-        error: true,
-        message: error,
-      })
-      .code(500);
+    return h.response({
+      error: true,
+      message: 'verivication Ordo Failed',
+    });
   }
 };
+
 module.exports = [getAllOrdo, addOrdo, detailOrdo, deleteOrdo, verifikasiOrdo, EditDataOrdo];

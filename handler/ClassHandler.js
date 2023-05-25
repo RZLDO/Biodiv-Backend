@@ -36,7 +36,6 @@ const getAllClass = async (response, h) => {
 const getDataClassById = async (request, h) => {
   try {
     const { id } = request.params;
-    // console.log(id);
     const query = 'Select * from tb_class where id_class = ?';
     const queryParams = [id];
     const [data] = await (await connection).execute(query, queryParams);
@@ -157,16 +156,23 @@ const updateClassData = async (request, h) => {
 };
 
 const verifikasiTbClass = async (request, h) => {
-  const { verifikasi, id_class } = request.payload;
-
-  await connection.query('UPDATE tb_class SET verifikasi=? WHERE id_class=?', [verifikasi, id_class], function (error, rows, field) {
-    if (error) {
-      console.error(error);
-      return h.response('Error updating data.').code(500);
-    } else {
-      return h.response({ status: 'success' });
-    }
-  });
+  try {
+    const { id_class } = request.params;
+    const query = 'UPDATE tb_class SET verifikasi = ? where id_class = ? ';
+    const queryParams = 'sukses';
+    const result = await (await connection).execute(query, [queryParams, id_class]);
+    console.log(result[0]);
+    return h.response({
+      error: false,
+      message: 'Verivikasi data success',
+    });
+  } catch (error) {
+    console.log(error);
+    return h.response({
+      error: true,
+      message: error,
+    });
+  }
 };
 
 const deleteClass = async (request, h) => {
