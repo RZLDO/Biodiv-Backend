@@ -23,9 +23,8 @@ const getSpesiesData = async (response, h) => {
   }
 };
 
-const AddGenusData = async (request, h) => {
-  const { nama_latin, nama_umum, ciri_ciri, keterangan, idGenus } = request.payload;
-  console.log(nama_latin, nama_umum, ciri_ciri, keterangan, idGenus);
+const AddSpesiesData = async (request, h) => {
+  const { nama_latin, nama_umum, habitat, karakteristik, keterangan, status, id_genus, id_kategori } = request.payload;
   if (!request.payload.image) {
     return h
       .response({
@@ -51,10 +50,22 @@ const AddGenusData = async (request, h) => {
 
   file.pipe(fileStream);
   try {
-    await (await connection).execute('INSERT INTO tb_genus (id_genus, nama_latin,nama_umum, ciri_ciri,keterangan, gambar, id_famili) VALUES(?,?,?,?,?,?,?)', [null, nama_latin, nama_umum, ciri_ciri, keterangan, fileName, id_famili]);
+    await (
+      await connection
+    ).execute('INSERT INTO tb_genus (id_spesies,nama_latin, nama_umum, habitat,karakteristik, keterangan, status,gambar,id_genus,id_kategori) VALUES(?,?,?,?,?,?,?,?,?,?)', [
+      nama_latin,
+      nama_umum,
+      habitat,
+      karakteristik,
+      keterangan,
+      status,
+      fileName,
+      id_genus,
+      id_kategori,
+    ]);
     return h.response({
       error: false,
-      message: 'Add Data Genus success',
+      message: 'Add Data spesies success',
     });
   } catch (error) {
     return h.response({
@@ -64,11 +75,11 @@ const AddGenusData = async (request, h) => {
   }
 };
 
-const DetailgenusData = async (request, h) => {
+const DetailSpesiesData = async (request, h) => {
   try {
-    const { id_genus } = request.params;
-    const query = 'SELECT * FROM tb_genus where id_genus = ?';
-    const queryParams = [id_genus];
+    const { id_spesies } = request.params;
+    const query = 'SELECT * FROM tb_spesies where id_spesies = ?';
+    const queryParams = [id_spesies];
     const [data] = await (await connection).execute(query, queryParams);
     return h.response({
       error: false,
@@ -83,11 +94,11 @@ const DetailgenusData = async (request, h) => {
   }
 };
 
-const DeleteGenusData = async (request, h) => {
+const DeleteSpesiesData = async (request, h) => {
   try {
-    const { id_genus } = request.params;
-    const query = 'DELETE FROM tb_genus where id_genus = ? ';
-    const queryParams = [id_genus];
+    const { id_spesies } = request.params;
+    const query = 'DELETE FROM tb_spesies where id_spesies = ? ';
+    const queryParams = [id_spesies];
 
     await (await connection).execute(query, queryParams);
     return h.response({
@@ -102,7 +113,7 @@ const DeleteGenusData = async (request, h) => {
   }
 };
 
-const updateGenus = async (request, h) => {
+const updateSpesies = async (request, h) => {
   const { id_genus, nama_latin, nama_umum, ciri_ciri, keterangan, id_famili } = request.payload;
   if (!request.payload.image) {
     return h
@@ -145,4 +156,28 @@ const updateGenus = async (request, h) => {
     });
   }
 };
-module.exports = [getSpesiesData, AddGenusData, DetailgenusData, DeleteGenusData, updateGenus];
+
+const verifikasiSpesies = async (request, h) => {
+  try {
+    const { id_spesies } = request.params;
+    const query = 'UPDATE tb_spesies SET verifikasi = ? where id_spesies = ?';
+    const queryParams = 'sukses';
+
+    await (await connection).execute(query, [queryParams, id_spesies]);
+
+    return h
+      .response({
+        error: false,
+        message: 'Verification Spesies sukses',
+      })
+      .code(200);
+  } catch (error) {
+    return h
+      .response({
+        error: true,
+        message: error,
+      })
+      .code(200);
+  }
+};
+module.exports = [getSpesiesData, AddSpesiesData, DetailSpesiesData, DeleteSpesiesData, updateSpesies, verifikasiSpesies];

@@ -149,6 +149,7 @@ const updateGenus = async (request, h) => {
 const verifGenus = async (request, h) => {
   try {
     const { id_genus } = request.params;
+    console.log(id_genus);
     const query = 'UPDATE tb_genus SET verifikasi = ? where id_genus = ? ';
     const queryParams = 'sukses';
 

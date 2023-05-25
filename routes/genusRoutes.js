@@ -42,7 +42,7 @@ const genusRoutes = [
   {
     method: 'PUT',
     path: '/api/verif/genus/{id_genus}',
-    handler: updateGenus,
+    handler: verifGenus,
   },
 ];
 
