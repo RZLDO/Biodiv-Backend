@@ -73,5 +73,23 @@ const getUnverifiedOrdo = async (request, h) => {
     });
   }
 };
+const getUnverifiedSpesies = async (request, h) => {
+  try {
+    const query = 'SELECT * FROM tb_spesies where verifikasi = ?';
+    const queryParams = '';
+    const [data] = await (await connection).execute(query, [queryParams]);
 
-module.exports = [getUnverifiedClass, getUnverifiedGenus, getUnverifiedFamili, getUnverifiedOrdo];
+    return h.response({
+      error: false,
+      message: 'Get unverified data spesies success',
+      data: data,
+    });
+  } catch (error) {
+    return h.response({
+      error: true,
+      message: error,
+    });
+  }
+};
+
+module.exports = [getUnverifiedClass, getUnverifiedGenus, getUnverifiedFamili, getUnverifiedOrdo, getUnverifiedSpesies];

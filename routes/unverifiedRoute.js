@@ -1,4 +1,4 @@
-const [getUnverifiedClass, getUnverifiedGenus, getUnverifiedFamili, getUnverifiedOrdo] = require('../handler/unverifiedHandler');
+const [getUnverifiedClass, getUnverifiedGenus, getUnverifiedFamili, getUnverifiedOrdo, getUnverifiedSpesies] = require('../handler/unverifiedHandler');
 const unverifiedRoutes = [
   {
     method: 'GET',
@@ -19,6 +19,11 @@ const unverifiedRoutes = [
     method: 'GET',
     path: '/api/unverified/famili',
     handler: getUnverifiedFamili,
+  },
+  {
+    method: 'GET',
+    path: '/api/unverified/spesies',
+    handler: getUnverifiedSpesies,
   },
 ];
 

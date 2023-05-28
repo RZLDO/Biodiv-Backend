@@ -6,13 +6,14 @@ const ordoRoute = require('./routes/ordoRoute');
 const genusRoutes = require('./routes/genusRoutes');
 const unverifiedRoutes = require('./routes/unverifiedRoute');
 const spesiesRoutes = require('./routes/spesiesRoute');
+const ScarcityRoute = require('./routes/scarcityRoute');
 const server = new Hapi.server({
   port: 5000,
-  host: '192.168.1.7',
+  host: '192.168.1.11',
 });
 const init = async () => {
   await server.register(require('@hapi/inert'));
-  server.route([...AuthRoutes, ...classRoute, ...familiRoutes, ...ordoRoute, ...genusRoutes, ...unverifiedRoutes, ...spesiesRoutes]);
+  server.route([...AuthRoutes, ...classRoute, ...familiRoutes, ...ordoRoute, ...genusRoutes, ...unverifiedRoutes, ...spesiesRoutes, ...ScarcityRoute]);
   await server.start();
   console.log(`Server berjalan pada ${server.info.uri}`);
 };

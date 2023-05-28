@@ -10,7 +10,7 @@ const getSpesiesData = async (response, h) => {
     const [data] = await (await connection).execute(query, [queryParams]);
     return h.response({
       error: false,
-      message: 'Fetching Data Genus Success',
+      message: 'Fetching Data Famili Success',
       data,
     });
   } catch (error) {
@@ -52,7 +52,8 @@ const AddSpesiesData = async (request, h) => {
   try {
     await (
       await connection
-    ).execute('INSERT INTO tb_genus (id_spesies,nama_latin, nama_umum, habitat,karakteristik, keterangan, status,gambar,id_genus,id_kategori) VALUES(?,?,?,?,?,?,?,?,?,?)', [
+    ).execute('INSERT INTO tb_spesies (id_spesies,nama_latin, nama_umum, habitat,karakteristik, keterangan, status,gambar,id_genus,id_kategori) VALUES(?,?,?,?,?,?,?,?,?,?)', [
+      null,
       nama_latin,
       nama_umum,
       habitat,

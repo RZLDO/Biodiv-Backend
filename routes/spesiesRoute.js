@@ -1,4 +1,4 @@
-const [getSpesiesData, AddSpesiesData, DetailSpesiesData, DeleteSpesiesData, updateSpesies, verifikasiSpesies] = require('../handler/familiHandler');
+const [getSpesiesData, AddSpesiesData, DetailSpesiesData, DeleteSpesiesData, updateSpesies, verifikasiSpesies] = require('../handler/spesiesHandler');
 
 const spesiesRoutes = [
   {
@@ -29,7 +29,7 @@ const spesiesRoutes = [
     handler: DeleteSpesiesData,
   },
   {
-    method: 'UPDATE',
+    method: 'PUT',
     path: '/api/spesies/{id_spesies}',
     handler: updateSpesies,
     options: {
