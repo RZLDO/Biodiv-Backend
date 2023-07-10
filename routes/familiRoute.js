@@ -1,6 +1,11 @@
-const [getAllFamily, getFamilyById, addFamily, updateFamily, deleteFamily, verifFamili] = require('../handler/familiHandler');
+const [getAllFamily, getFamilyById, addFamily, updateFamily, deleteFamily, verifFamili, getFamilyByOrdo] = require('../handler/familiHandler');
 
 const familiRoutes = [
+  {
+    method: 'GET',
+    path: '/api/famili/ordo/',
+    handler: getFamilyByOrdo,
+  },
   {
     method: 'GET',
     path: '/api/famili',

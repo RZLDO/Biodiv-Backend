@@ -2,6 +2,44 @@ const connection = require('../service/databaseConnection');
 const path = require('path');
 const fs = require('fs');
 
+const getSpesiesByGenus = async (request, h) => {
+  try {
+    const { id_genus, page } = request.query;
+    if (page == null) {
+      const queryParams = ['sukses', id_genus];
+      const query = 'SELECT * FROM tb_famili WHERE verifikasi = ? AND id_ordo = ? ORDER BY nama_umum ASC';
+      const [data] = await (await connection).execute(query, queryParams);
+      if (data && data.length > 0) {
+        const response = h.response({
+          error: false,
+          message: 'Fetching data successfully',
+          data,
+        });
+        response.code(200);
+        return response;
+      }
+    } else {
+      const queryParams = ['sukses', id_genus, page];
+      const query = 'SELECT * FROM tb_famili WHERE verifikasi = ? AND id_ordo = ? ORDER BY RAND() LIMIT ?';
+      const [data] = await (await connection).execute(query, queryParams);
+
+      const response = h.response({
+        error: false,
+        message: 'Fetching data successfully',
+        data,
+      });
+      response.code(200);
+      return response;
+    }
+  } catch (error) {
+    const response = h.response({
+      error: true,
+      message: 'Failed to get data: ' + error,
+    });
+    response.code(500);
+    return response;
+  }
+};
 const getSpesiesData = async (response, h) => {
   try {
     const query = 'SELECT * FROM tb_spesies WHERE verifikasi = ?';
@@ -84,7 +122,7 @@ const DetailSpesiesData = async (request, h) => {
     const [data] = await (await connection).execute(query, queryParams);
     return h.response({
       error: false,
-      message: 'fetch Detail Genus Data Success',
+      message: 'fetch Detail Spesies Data Success',
       data: data[0],
     });
   } catch (error) {
@@ -181,4 +219,4 @@ const verifikasiSpesies = async (request, h) => {
       .code(200);
   }
 };
-module.exports = [getSpesiesData, AddSpesiesData, DetailSpesiesData, DeleteSpesiesData, updateSpesies, verifikasiSpesies];
+module.exports = [getSpesiesData, AddSpesiesData, DetailSpesiesData, DeleteSpesiesData, updateSpesies, verifikasiSpesies, getSpesiesByGenus];

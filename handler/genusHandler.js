@@ -23,6 +23,44 @@ const getGenusData = async (response, h) => {
   }
 };
 
+const getGenusByFamili = async (request, h) => {
+  try {
+    const { id_famili, page } = request.query;
+    if (page == null) {
+      const queryParams = ['sukses', id_famili];
+      const query = 'SELECT * FROM tb_genus WHERE verifikasi = ? AND id_famili = ? ORDER BY nama_umum ASC';
+      const [data] = await (await connection).execute(query, queryParams);
+      if (data && data.length > 0) {
+        const response = h.response({
+          error: false,
+          message: 'Fetching data successfully',
+          data,
+        });
+        response.code(200);
+        return response;
+      }
+    } else {
+      const queryParams = ['sukses', id_famili, page];
+      const query = 'SELECT * FROM tb_genus WHERE verifikasi = ? AND id_famili = ? ORDER BY RAND() LIMIT ?';
+      const [data] = await (await connection).execute(query, queryParams);
+
+      const response = h.response({
+        error: false,
+        message: 'Fetching data successfully',
+        data,
+      });
+      response.code(200);
+      return response;
+    }
+  } catch (error) {
+    const response = h.response({
+      error: true,
+      message: 'Failed to get data: ' + error,
+    });
+    response.code(500);
+    return response;
+  }
+};
 const AddGenusData = async (request, h) => {
   const { nama_latin, nama_umum, ciri_ciri, keterangan, id_famili } = request.payload;
   console.log(nama_latin, nama_umum, ciri_ciri, keterangan, id_famili);
@@ -165,4 +203,4 @@ const verifGenus = async (request, h) => {
     });
   }
 };
-module.exports = [getGenusData, AddGenusData, DetailgenusData, DeleteGenusData, updateGenus, verifGenus];
+module.exports = [getGenusData, AddGenusData, DetailgenusData, DeleteGenusData, updateGenus, verifGenus, getGenusByFamili];

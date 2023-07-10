@@ -1,5 +1,10 @@
-const [getGenusData, AddGenusData, DetailgenusData, DeleteGenusData, updateGenus, verifGenus] = require('../handler/genusHandler');
+const [getGenusData, AddGenusData, DetailgenusData, DeleteGenusData, updateGenus, verifGenus, getGenusByFamili] = require('../handler/genusHandler');
 const genusRoutes = [
+  {
+    method: 'GET',
+    path: '/api/genus/famili/',
+    handler: getGenusByFamili,
+  },
   {
     method: 'GET',
     path: '/api/genus',

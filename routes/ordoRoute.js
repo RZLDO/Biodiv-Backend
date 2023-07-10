@@ -1,5 +1,11 @@
-const [getAllOrdo, addOrdo, detailOrdo, deleteOrdo, verifikasiOrdo, EditDataOrdo] = require('../handler/ordoHandler');
+const [getAllOrdo, addOrdo, detailOrdo, deleteOrdo, verifikasiOrdo, EditDataOrdo, getOrdoByClass] = require('../handler/ordoHandler');
 const ordoRoute = [
+  {
+    method: 'GET',
+    path: '/api/ordo/class/',
+    handler: getOrdoByClass,
+  },
+
   {
     method: 'POST',
     path: '/api/ordo',

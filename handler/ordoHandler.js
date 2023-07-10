@@ -2,9 +2,50 @@ const connection = require('../service/databaseConnection');
 const path = require('path');
 const fs = require('fs');
 const { request } = require('http');
+const getOrdoByClass = async (request, h) => {
+  try {
+    const { id_class, page } = request.query;
+    console.log(id_class + page);
+    if (page == null) {
+      const queryParams = ['sukses', id_class];
+      const query = 'SELECT * FROM tb_ordo WHERE verifikasi = ? AND id_class = ? ORDER BY nama_umum ASC';
+      const [data] = await (await connection).execute(query, queryParams);
+      if (data && data.length > 0) {
+        const response = h.response({
+          error: false,
+          message: 'Fetching data successfully',
+          data,
+        });
+        response.code(200);
+        return response;
+      }
+    } else {
+      const queryParams = ['sukses', id_class, page];
+      const query = 'SELECT * FROM tb_ordo WHERE verifikasi = ? AND id_class = ? ORDER BY RAND() LIMIT ?';
+      const [data] = await (await connection).execute(query, queryParams);
+      if (data && data.length > 0) {
+        const response = h.response({
+          error: false,
+          message: 'Fetching data successfully',
+          data,
+        });
+        response.code(200);
+        return response;
+      }
+    }
+  } catch (error) {
+    const response = h.response({
+      error: true,
+      message: 'Failed to get data: ' + error,
+    });
+    response.code(500);
+    return response;
+  }
+};
+
 const getAllOrdo = async (request, h) => {
   try {
-    const query = 'SELECT * FROM tb_ordo where verifikasi =? ';
+    const query = 'SELECT * FROM tb_ordo where verifikasi =? ORDER BY id_class';
     const queryParams = 'sukses';
     const [data] = await (await connection).execute(query, [queryParams]);
     if (data && data.length > 0) {
@@ -185,4 +226,4 @@ const verifikasiOrdo = async (request, h) => {
   }
 };
 
-module.exports = [getAllOrdo, addOrdo, detailOrdo, deleteOrdo, verifikasiOrdo, EditDataOrdo];
+module.exports = [getAllOrdo, addOrdo, detailOrdo, deleteOrdo, verifikasiOrdo, EditDataOrdo, getOrdoByClass];
