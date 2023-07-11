@@ -36,5 +36,24 @@ const getDataScarcity = async (request, h) => {
       .code(500);
   }
 };
+const getScarcityById = async (request, h) => {
+  try {
+    const { id_scarcity } = request.params;
 
-module.exports = [getScarcity, getDataScarcity];
+    const query = 'SELECT * FROM tb_kelangkaan WHERE id_kategori = ?';
+    const queryParams = [id_scarcity];
+    const [result] = await (await connection).execute(query, queryParams);
+    return h.response({
+      error: false,
+      message: 'fetch data success',
+      data: result[0],
+    });
+  } catch (error) {
+    return h
+      .response({
+        error: error,
+      })
+      .code(500);
+  }
+};
+module.exports = [getScarcity, getDataScarcity, getScarcityById];

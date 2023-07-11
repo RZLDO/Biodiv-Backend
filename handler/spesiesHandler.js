@@ -113,7 +113,26 @@ const AddSpesiesData = async (request, h) => {
     });
   }
 };
+const getSpesiesByScarcity = async (request, h) => {
+  try {
+    const { id_kategori } = request.params;
+    const query = 'SELECT * FROM tb_spesies where id_kategori = ?';
+    const queryParams = [id_kategori];
 
+    const [data] = await (await connection).execute(query, queryParams);
+
+    return h.response({
+      error: false,
+      message: 'get data by kategori success',
+      data,
+    });
+  } catch (error) {
+    return h.response({
+      error: true,
+      message: error,
+    });
+  }
+};
 const DetailSpesiesData = async (request, h) => {
   try {
     const { id_spesies } = request.params;
@@ -219,4 +238,4 @@ const verifikasiSpesies = async (request, h) => {
       .code(200);
   }
 };
-module.exports = [getSpesiesData, AddSpesiesData, DetailSpesiesData, DeleteSpesiesData, updateSpesies, verifikasiSpesies, getSpesiesByGenus];
+module.exports = [getSpesiesData, AddSpesiesData, DetailSpesiesData, DeleteSpesiesData, updateSpesies, verifikasiSpesies, getSpesiesByGenus, getSpesiesByScarcity];

@@ -1,4 +1,4 @@
-const [getScarcity, getDataScarcity] = require('../handler/scarcityHandler');
+const [getScarcity, getDataScarcity, getScarcityById] = require('../handler/scarcityHandler');
 
 const ScarcityRoute = [
   {
@@ -10,6 +10,11 @@ const ScarcityRoute = [
     method: 'GET',
     path: '/api/scarcity/total',
     handler: getDataScarcity,
+  },
+  {
+    method: 'GET',
+    path: '/api/scarcity/{id_scarcity}',
+    handler: getScarcityById,
   },
 ];
 
