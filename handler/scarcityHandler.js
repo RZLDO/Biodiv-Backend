@@ -39,7 +39,6 @@ const getDataScarcity = async (request, h) => {
 const getScarcityById = async (request, h) => {
   try {
     const { id_scarcity } = request.params;
-
     const query = 'SELECT * FROM tb_kelangkaan WHERE id_kategori = ?';
     const queryParams = [id_scarcity];
     const [result] = await (await connection).execute(query, queryParams);

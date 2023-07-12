@@ -1,5 +1,5 @@
 const [loginHandler, registerHandler, indexHandler] = require('../handler/authHandler');
-const [getTotalData, getUnverifiedData] = require('../handler/allData');
+const [getTotalData, getUnverifiedData, searching] = require('../handler/allData');
 const authMiddleware = require('../middleware/authMiddleware');
 const AuthRoutes = [
   {
@@ -11,6 +11,11 @@ const AuthRoutes = [
     method: 'Post',
     path: '/api/login',
     handler: loginHandler,
+  },
+  {
+    method: 'GET',
+    path: '/api/search/{searching}',
+    handler: searching,
   },
   {
     method: 'Get',

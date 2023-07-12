@@ -7,26 +7,25 @@ const getSpesiesByGenus = async (request, h) => {
     const { id_genus, page } = request.query;
     if (page == null) {
       const queryParams = ['sukses', id_genus];
-      const query = 'SELECT * FROM tb_famili WHERE verifikasi = ? AND id_ordo = ? ORDER BY nama_umum ASC';
-      const [data] = await (await connection).execute(query, queryParams);
-      if (data && data.length > 0) {
-        const response = h.response({
-          error: false,
-          message: 'Fetching data successfully',
-          data,
-        });
-        response.code(200);
-        return response;
-      }
-    } else {
-      const queryParams = ['sukses', id_genus, page];
-      const query = 'SELECT * FROM tb_famili WHERE verifikasi = ? AND id_ordo = ? ORDER BY RAND() LIMIT ?';
+      const query = 'SELECT * FROM tb_spesies WHERE verifikasi = ? AND id_genus = ? ORDER BY nama_umum ASC';
       const [data] = await (await connection).execute(query, queryParams);
 
       const response = h.response({
         error: false,
         message: 'Fetching data successfully',
         data,
+      });
+      response.code(200);
+      return response;
+    } else {
+      const queryParams = ['sukses', id_genus, page];
+      const query = 'SELECT * FROM tb_spesies WHERE verifikasi = ? AND id_genus = ? ORDER BY RAND() LIMIT ?';
+      const [data] = await (await connection).execute(query, queryParams);
+
+      const response = h.response({
+        error: false,
+        message: 'Fetching data successfully',
+        class: data[0],
       });
       response.code(200);
       return response;
