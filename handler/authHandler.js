@@ -38,8 +38,8 @@ const loginHandler = async (request, h) => {
     }
 
     const user = rows[0];
-
     const passwordMatch = await bcrypt.compare(password, user.password);
+    console.log(password);
     if (!passwordMatch) {
       const response = h.response({
         error: true,

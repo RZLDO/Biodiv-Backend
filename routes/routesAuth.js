@@ -1,7 +1,17 @@
 const [loginHandler, registerHandler, indexHandler] = require('../handler/authHandler');
-const [getTotalData, getUnverifiedData, searching] = require('../handler/allData');
+const [getTotalData, getUnverifiedData, searching, getUserData, getSpreadAnimal] = require('../handler/allData');
 const authMiddleware = require('../middleware/authMiddleware');
 const AuthRoutes = [
+  {
+    method: 'GET',
+    path: '/api/lokasi/{id_spesies}',
+    handler: getSpreadAnimal,
+  },
+  {
+    method: 'GET',
+    path: '/api/profile/{id_user}',
+    handler: getUserData,
+  },
   {
     method: 'Post',
     path: '/api/register',

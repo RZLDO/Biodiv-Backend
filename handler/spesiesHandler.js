@@ -25,7 +25,7 @@ const getSpesiesByGenus = async (request, h) => {
       const response = h.response({
         error: false,
         message: 'Fetching data successfully',
-        class: data[0],
+        data,
       });
       response.code(200);
       return response;
@@ -136,12 +136,15 @@ const DetailSpesiesData = async (request, h) => {
   try {
     const { id_spesies } = request.params;
     const query = 'SELECT * FROM tb_spesies where id_spesies = ?';
+    const queryLokasi = 'SELECT * FROM tb_lokasi where id_spesies = ?';
     const queryParams = [id_spesies];
     const [data] = await (await connection).execute(query, queryParams);
+    const [lokasi] = await (await connection).execute(queryLokasi, queryParams);
     return h.response({
       error: false,
       message: 'fetch Detail Spesies Data Success',
       data: data[0],
+      lokasi,
     });
   } catch (error) {
     return h.response({
@@ -237,4 +240,5 @@ const verifikasiSpesies = async (request, h) => {
       .code(200);
   }
 };
+
 module.exports = [getSpesiesData, AddSpesiesData, DetailSpesiesData, DeleteSpesiesData, updateSpesies, verifikasiSpesies, getSpesiesByGenus, getSpesiesByScarcity];

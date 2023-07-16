@@ -153,7 +153,6 @@ const searching = async (request, h) => {
         ordo: resultsArray[1],
         famili: resultsArray[2],
         genus: resultsArray[3],
-
         spesies: resultsArray[4],
       },
     });
@@ -170,4 +169,34 @@ const searching = async (request, h) => {
   }
 };
 
-module.exports = [getTotalData, getUnverifiedData, searching];
+const getUserData = async (request, h) => {
+  try {
+    const { id_user } = request.params;
+    const query = 'SELECT * FROM tb_institusi where id_institusi = ? ';
+    const queryParams = [id_user];
+    const [data] = await (await connection).execute(query, queryParams);
+    const response = h.response({
+      error: false,
+      message: 'Get Profile user success',
+      data: data[0],
+    });
+    response.code(200);
+    return response;
+  } catch (error) {
+    const response = h.response({
+      error: false,
+      message: error.message,
+    });
+    response.code(500);
+    return response;
+  }
+};
+const getSpreadAnimal = async (request, h) => {
+  const { id_spesies } = request.params;
+  const queryParams = [id_spesies];
+  const query = 'SELECT * FROM tb_lokasi WHERE id_spesies = ?';
+
+  const [result] = await (await connection).execute(query, queryParams);
+  return result;
+};
+module.exports = [getTotalData, getUnverifiedData, searching, getUserData, getSpreadAnimal];
