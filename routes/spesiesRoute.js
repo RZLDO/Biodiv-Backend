@@ -1,6 +1,11 @@
-const [getSpesiesData, AddSpesiesData, DetailSpesiesData, DeleteSpesiesData, updateSpesies, verifikasiSpesies, getSpesiesByGenus, getSpesiesByScarcity] = require('../handler/spesiesHandler');
+const [getSpesiesData, AddSpesiesData, DetailSpesiesData, DeleteSpesiesData, updateSpesies, verifikasiSpesies, getSpesiesByGenus, getSpesiesByScarcity, addSpesiesLocation] = require('../handler/spesiesHandler');
 
 const spesiesRoutes = [
+  {
+    method: 'POST',
+    path: '/api/spesies/location/',
+    handler: addSpesiesLocation,
+  },
   {
     method: 'GET',
     path: '/api/spesies/scarcity/{id_kategori}',

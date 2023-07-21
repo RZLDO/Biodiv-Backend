@@ -1,7 +1,30 @@
 const connection = require('../service/databaseConnection');
 const path = require('path');
 const fs = require('fs');
+const addSpesiesLocation = async (request, h) => {
+  try {
+    const { nama_lokasi, latitude, longitude, radius, idSpesies } = request.payload;
+    const query = 'INSERT INTO tb_lokasi (id_lokasi,nama_lokasi, latitude, longitude, radius,id_spesies) VALUES(null,?,?,?,?,?)';
+    const queryParams = [nama_lokasi, latitude, longitude, radius, idSpesies];
 
+    await (await connection).execute(query, queryParams);
+
+    const response = h.response({
+      error: false,
+      message: 'success add location data',
+    });
+
+    response.code(200);
+    return response;
+  } catch (e) {
+    const response = h.response({
+      error: true,
+      message: e.message,
+    });
+
+    return response;
+  }
+};
 const getSpesiesByGenus = async (request, h) => {
   try {
     const { id_genus, page } = request.query;
@@ -174,7 +197,7 @@ const DeleteSpesiesData = async (request, h) => {
 };
 
 const updateSpesies = async (request, h) => {
-  const { id_genus, nama_latin, nama_umum, ciri_ciri, keterangan, id_famili } = request.payload;
+  const { id_spesies, nama_latin, nama_umum, habitat, karakteristik, keterangan, status, id_genus, id_kategori } = request.payload;
   if (!request.payload.image) {
     return h
       .response({
@@ -203,7 +226,18 @@ const updateSpesies = async (request, h) => {
   try {
     const [response] = await (
       await connection
-    ).execute('UPDATE tb_genus SET nama_latin = ?,nama_umum = ?, ciri_ciri = ?, keterangan = ? , id_famili = ? WHERE id_genus =  ?', [nama_latin, nama_umum, ciri_ciri, keterangan, id_famili, id_genus]);
+    ).execute('UPDATE tb_spesies SET nama_latin = ?,nama_umum = ?,habitat = ?,karakteristik = ? , keterangan = ? , status = ?, gambar = ?, id_genus = ? , id_kategori = ? WHERE id_spesies =  ?', [
+      nama_latin,
+      nama_umum,
+      habitat,
+      karakteristik,
+      keterangan,
+      status,
+      fileName,
+      id_genus,
+      id_kategori,
+      id_spesies,
+    ]);
     console.log(response);
     return h.response({
       error: false,
@@ -241,4 +275,4 @@ const verifikasiSpesies = async (request, h) => {
   }
 };
 
-module.exports = [getSpesiesData, AddSpesiesData, DetailSpesiesData, DeleteSpesiesData, updateSpesies, verifikasiSpesies, getSpesiesByGenus, getSpesiesByScarcity];
+module.exports = [getSpesiesData, AddSpesiesData, DetailSpesiesData, DeleteSpesiesData, updateSpesies, verifikasiSpesies, getSpesiesByGenus, getSpesiesByScarcity, addSpesiesLocation];
