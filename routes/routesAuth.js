@@ -1,7 +1,17 @@
-const [loginHandler, registerHandler, indexHandler] = require('../handler/authHandler');
+const [loginHandler, registerHandler, indexHandler, changePasswordHandler, changeUsernameHandler] = require('../handler/authHandler');
 const [getTotalData, getUnverifiedData, searching, getUserData, getSpreadAnimal] = require('../handler/allData');
 const authMiddleware = require('../middleware/authMiddleware');
 const AuthRoutes = [
+  {
+    method: 'PUT',
+    path: '/api/users/username/{id_user}',
+    handler: changeUsernameHandler,
+  },
+  {
+    method: 'PUT',
+    path: '/api/users/password/{id_user}',
+    handler: changePasswordHandler,
+  },
   {
     method: 'GET',
     path: '/api/lokasi/{id_spesies}',
