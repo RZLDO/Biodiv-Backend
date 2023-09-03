@@ -9,13 +9,14 @@ const spesiesRoutes = require('./routes/spesiesRoute');
 const ScarcityRoute = require('./routes/scarcityRoute');
 const ReportRoutes = require('./routes/reportRoute');
 const lokasiRoutes = require('./routes/lokasiRoute');
+const NewsRoute = require('./routes/newsRoute');
 const server = new Hapi.server({
   host: '10.140.138.79',
-  port: 3000,
+  port: 5000,
 });
 const init = async () => {
   await server.register(require('@hapi/inert'));
-  server.route([...AuthRoutes, ...lokasiRoutes, ...classRoute, ...familiRoutes, ...ordoRoute, ...genusRoutes, ...unverifiedRoutes, ...spesiesRoutes, ...ScarcityRoute, ...ReportRoutes]);
+  server.route([...AuthRoutes, ...NewsRoute, ...lokasiRoutes, ...classRoute, ...familiRoutes, ...ordoRoute, ...genusRoutes, ...unverifiedRoutes, ...spesiesRoutes, ...ScarcityRoute, ...ReportRoutes]);
   await server.start();
   console.log(`Server berjalan pada ${server.info.uri}`);
 };
