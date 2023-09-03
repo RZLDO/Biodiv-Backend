@@ -182,13 +182,15 @@ const deleteClass = async (request, h) => {
     const queryParams = [id_class];
     await (await connection).execute(query, queryParams);
     const response = h.response({
+      error: false,
       message: 'Data Deleted Successfuly',
     });
     response.code(200);
     return response;
   } catch (error) {
     const response = h.response({
-      message: error,
+      error: true,
+      message: error.message,
     });
     response.code(500);
     return response;

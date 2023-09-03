@@ -5,33 +5,30 @@ const { request } = require('http');
 const getOrdoByClass = async (request, h) => {
   try {
     const { id_class, page } = request.query;
-    console.log(id_class + page);
     if (page == null) {
       const queryParams = ['sukses', id_class];
       const query = 'SELECT * FROM tb_ordo WHERE verifikasi = ? AND id_class = ? ORDER BY nama_umum ASC';
       const [data] = await (await connection).execute(query, queryParams);
-      if (data && data.length > 0) {
-        const response = h.response({
-          error: false,
-          message: 'Fetching data successfully',
-          data,
-        });
-        response.code(200);
-        return response;
-      }
+
+      const response = h.response({
+        error: false,
+        message: 'Fetching data successfully',
+        data,
+      });
+      response.code(200);
+      return response;
     } else {
       const queryParams = ['sukses', id_class, page];
       const query = 'SELECT * FROM tb_ordo WHERE verifikasi = ? AND id_class = ? ORDER BY RAND() LIMIT ?';
       const [data] = await (await connection).execute(query, queryParams);
-      if (data && data.length > 0) {
-        const response = h.response({
-          error: false,
-          message: 'Fetching data successfully',
-          data,
-        });
-        response.code(200);
-        return response;
-      }
+
+      const response = h.response({
+        error: false,
+        message: 'Fetching data successfully',
+        data,
+      });
+      response.code(200);
+      return response;
     }
   } catch (error) {
     const response = h.response({

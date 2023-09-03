@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const dotenv = require('dotenv');
 const connection = require('../service/databaseConnection');
-const { error } = require('@hapi/joi/lib/base');
 dotenv.config();
 
 const saltRounds = 10;
@@ -60,7 +59,6 @@ const loginHandler = async (request, h) => {
         token: token,
       },
     });
-    connection.release();
     response.code(200);
     return response;
   } catch (e) {
@@ -161,7 +159,7 @@ const changePasswordHandler = async (request, h) => {
       .code(200);
   } catch (error) {
     console.error(error);
-    return h.response('Terjadi kesalahan dalam mengubah password').code(500);
+    return h.response(error).code(500);
   }
 };
 const changeUsernameHandler = async (request, h) => {
@@ -192,7 +190,7 @@ const changeUsernameHandler = async (request, h) => {
       .code(200);
   } catch (error) {
     console.error(error);
-    return h.response('Terjadi kesalahan dalam mengubah username').code(500);
+    return h.response(error).code(500);
   }
 };
 module.exports = [loginHandler, registerHandler, indexHandler, changePasswordHandler, changeUsernameHandler];
