@@ -1,5 +1,6 @@
 const connection = require('../service/databaseConnection');
-
+const path = require('path');
+const fs = require('fs');
 const getNews = async (request, h) => {
   try {
     const query = 'SELECT * FROM tb_berita';
@@ -47,7 +48,7 @@ const addNews = async (request, h) => {
 
   file.pipe(fileStream);
   try {
-    await (await connection).execute('INSERT INTO tb_berita (id_berita, deskripsi_singkat,web_url, gambar) VALUES(?,?,?,?,?)', [null, judul, deskripsi, url_web, fileName]);
+    await (await connection).execute('INSERT INTO tb_berita (id_berita, judul_berita,deskripsi_singkat,web_url, gambar) VALUES(?,?,?,?,?)', [null, judul, deskripsi, url_web, fileName]);
     return h.response({
       error: false,
       message: 'Add Data News success',
@@ -62,11 +63,11 @@ const addNews = async (request, h) => {
 
 const deleteNews = async (request, h) => {
   try {
-    const id_berita = request.params;
-    const query = 'DELETE tb_berita WHERE id_berita = ?';
+    const { id_berita } = request.params;
+    const query = 'DELETE FROM tb_berita WHERE id_berita=?';
     const queryParams = [id_berita];
 
-    await connection.execute(query, queryParams);
+    await (await connection).execute(query, queryParams);
     return h
       .response({
         error: false,
