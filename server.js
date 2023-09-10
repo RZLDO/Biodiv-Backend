@@ -10,13 +10,14 @@ const ScarcityRoute = require('./routes/scarcityRoute');
 const ReportRoutes = require('./routes/reportRoute');
 const lokasiRoutes = require('./routes/lokasiRoute');
 const NewsRoute = require('./routes/newsRoute');
+const analysisRoute = require('./routes/analysisRoute');
 const server = new Hapi.server({
-  host: '10.140.138.79',
+  host: '192.168.253.86',
   port: 5000,
 });
 const init = async () => {
   await server.register(require('@hapi/inert'));
-  server.route([...AuthRoutes, ...NewsRoute, ...lokasiRoutes, ...classRoute, ...familiRoutes, ...ordoRoute, ...genusRoutes, ...unverifiedRoutes, ...spesiesRoutes, ...ScarcityRoute, ...ReportRoutes]);
+  server.route([...AuthRoutes, ...NewsRoute, ...analysisRoute, ...lokasiRoutes, ...classRoute, ...familiRoutes, ...ordoRoute, ...genusRoutes, ...unverifiedRoutes, ...spesiesRoutes, ...ScarcityRoute, ...ReportRoutes]);
   await server.start();
   console.log(`Server berjalan pada ${server.info.uri}`);
 };

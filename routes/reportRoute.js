@@ -1,10 +1,15 @@
-const getReportClass = require('../handler/report');
+const [getReportPenyebaran, getReportSpesies] = require('../handler/report');
 
 const ReportRoutes = [
   {
     method: 'GET',
-    path: '/api/report/class',
-    handler: getReportClass,
+    path: '/api/report/penyebaran',
+    handler: getReportPenyebaran,
+  },
+  {
+    method: 'GET',
+    path: '/api/report/spesies',
+    handler: getReportSpesies,
   },
 ];
 
